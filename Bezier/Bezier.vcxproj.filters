@@ -13,18 +13,72 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Math">
+      <UniqueIdentifier>{db129582-449c-4a8f-9bf8-6636c3e4d530}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Other">
+      <UniqueIdentifier>{e85730b1-ebae-41df-bab2-250d6eb6f936}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Math">
+      <UniqueIdentifier>{78c79ab6-cf48-46c4-aded-86431d74d194}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Other">
+      <UniqueIdentifier>{0f25d76b-654d-43af-80a2-24bef4a390e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="src\Vector2.cpp">
+      <Filter>Fichiers sources\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Matrix3x3.cpp">
+      <Filter>Fichiers sources\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Vector3.cpp">
+      <Filter>Fichiers sources\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Curve.cpp">
+      <Filter>Fichiers sources\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\BezierCurve.cpp">
+      <Filter>Fichiers sources\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Interface.cpp">
+      <Filter>Fichiers sources\Other</Filter>
+    </ClCompile>
+    <ClCompile Include="src\global.cpp">
+      <Filter>Fichiers sources\Other</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="includes\includes.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+    <ClInclude Include="includes\Vector2.h">
+      <Filter>Fichiers d%27en-tête\Math</Filter>
     </ClInclude>
     <ClInclude Include="includes\global.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\includes.h">
+      <Filter>Fichiers d%27en-tête\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Matrix3x3.h">
+      <Filter>Fichiers d%27en-tête\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Vector3.h">
+      <Filter>Fichiers d%27en-tête\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\type.h">
+      <Filter>Fichiers d%27en-tête\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Curve.h">
+      <Filter>Fichiers d%27en-tête\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\BezierCurve.h">
+      <Filter>Fichiers d%27en-tête\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\interface.h">
+      <Filter>Fichiers d%27en-tête\Other</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
