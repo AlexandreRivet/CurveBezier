@@ -20,6 +20,7 @@ public:
 	void insert(int, const Vector2&);
 	void remove(int);
 	void reset();
+	void setColor(float, float, float);
 
 	void draw();
 
@@ -28,7 +29,7 @@ public:
 protected:
 
 	float mStep;
-
+	float* mColor;
 	std::vector<Vector2> mControlPoints;
 };
 

@@ -1,4 +1,4 @@
-#include "includes.h"
+ï»¿#include "includes.h"
 #include "global.h"
 #include "interface.h"
 
@@ -19,13 +19,18 @@ void display()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	bezier.compute();
-	bezier.draw();
-
-	// Dessin du carré d'édition
-	if (BEZIER_EDITED != -1)
+	// Dessin des courbes
+	for (unsigned int i = 0; i < curves.size(); ++i)
 	{
-		Vector2 vector_tmp = bezier.getPointAt(CURRENT_VERTEX_EDITED - 1);
+		curves[i]->draw();
+	}
+
+	// Dessin du carrÃ© d'Ã©dition
+	if (CURRENT_CURVE_EDITED != -1)
+	{
+		Vector2 vector_tmp;
+		if ((CURRENT_CURVE_EDITED >= 0 && CURRENT_CURVE_EDITED < curves.size()) && (CURRENT_VERTEX_EDITED >= 1 && CURRENT_VERTEX_EDITED <= curves[CURRENT_CURVE_EDITED]->getNbVertices()))
+			vector_tmp = curves[CURRENT_CURVE_EDITED]->getPointAt(CURRENT_VERTEX_EDITED - 1);
 
 		glColor3f(0.0f, 0.0f, 1.0f);
 		glBegin(GL_POLYGON);
@@ -46,20 +51,20 @@ int main(int argc, char** argv)
 	bezier.add(Vector2(328, 241));
 	bezier.add(Vector2(135, 197));
 	bezier.add(Vector2(123, 108));
-	bezier.add(Vector2(272, 50));*/
-	bezier.compute();
+	bezier.add(Vector2(272, 50));
+	bezier.compute();*/
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGBA | GLUT_ALPHA);
 	glutInitWindowPosition(10, 10);
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 	glutCreateWindow("Fenetrage et remplissage");
-	glutReshapeFunc(reshape);
-	glutDisplayFunc(display);
-
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	initMenu();
+	glutReshapeFunc(reshape);
+	glutDisplayFunc(display);
 	glutKeyboardFunc(key);
 	glutMouseFunc(mouse);
 	glutMotionFunc(motion);

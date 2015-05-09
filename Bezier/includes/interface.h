@@ -11,4 +11,11 @@ void motion(int, int);
 void mouseDown(int, int, int);
 void mouseUp(int, int, int);
 
+void initMenu();
+void select(int selection);
+void selectCurve(int selection);
+void editCurve(int selection);
+void addCurveItem(int parent, int index);
+void setColor(int selection);
+
 #endif

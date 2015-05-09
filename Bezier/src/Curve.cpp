@@ -2,10 +2,15 @@
 
 Curve::Curve()
 {
+	mColor = new float[3];
+	mColor[0] = 1.0f;
+	mColor[1] = 1.0f;
+	mColor[2] = 1.0f;
 }
 
 Curve::~Curve()
 {
+
 }
 
 void Curve::incStep()
@@ -45,6 +50,13 @@ void Curve::remove(int index)
 void Curve::reset()
 {
 	mControlPoints.clear();
+}
+
+void Curve::setColor(float r, float g, float b)
+{
+	mColor[0] = r;
+	mColor[1] = g;
+	mColor[2] = b;
 }
 
 void Curve::draw()

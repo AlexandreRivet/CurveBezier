@@ -21,7 +21,7 @@ void BezierCurve::draw()
 	Curve::draw();
 
 	Vector2 v;
-	glColor3f(1.0f, 0.0f, 0.0f);
+	glColor3f(mColor[0], mColor[1], mColor[2]);
 	glBegin(GL_LINE_STRIP);
 	for (unsigned int i = 0; i < mComputedPoints.size(); i++)
 	{
