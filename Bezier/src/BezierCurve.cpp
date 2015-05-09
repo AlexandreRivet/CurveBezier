@@ -1,6 +1,9 @@
 #include "BezierCurve.h"
 
 #include <string>
+#include <cmath>
+
+#define PI 3.14159
 
 BezierCurve::BezierCurve()
 {
@@ -67,4 +70,51 @@ void BezierCurve::compute()
 		mComputedPoints.push_back(DeCastelJau(step, mControlPoints));
 	}
 	mComputedPoints.push_back(mControlPoints[mControlPoints.size() - 1]);
+}
+
+void BezierCurve::translate(float x, float y)
+{
+	// Création de la matrice de translation
+	Matrix3x3 mat = Matrix3x3(
+		1.0f, 0.0f, x,
+		0.0f, 1.0f, y,
+		0.0f, 0.0f, 1.0f);
+
+	transform(mat);
+}
+
+void BezierCurve::rotate(float angle)
+{
+	float radian = angle * PI / 180.0f;
+
+	// Création de la matrice de translation
+	Matrix3x3 mat = Matrix3x3(
+		cos(radian),	-sin(radian),		0.0f,
+		sin(radian),	cos(radian),		0.0f,	
+		0.0f,			0.0f,				1.0f);
+
+	transform(mat);
+}
+
+void BezierCurve::scale(float x, float y)
+{
+	// Création de la matrice de translation
+	Matrix3x3 mat = Matrix3x3(
+		x,		0.0f,	0.0f,
+		0.0f,	y,		0.0f,
+		0.0f,	0.0f,	1.0f);
+
+	transform(mat);
+}
+
+void BezierCurve::transform(const Matrix3x3& mat)
+{
+	for (unsigned int i = 0; i < mControlPoints.size(); ++i)
+	{
+		Vector2 tmp = mControlPoints[i];
+		Vector3 res = mat * Vector3(tmp.getX(), tmp.getY(), 1.0f);
+		mControlPoints[i] = Vector2(res.getX(), res.getY());
+	}
+
+	compute();
 }

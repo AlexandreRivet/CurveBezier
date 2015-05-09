@@ -13,6 +13,11 @@ public:
 
 	Vector2& getPointAt(const int);
 
+	void translate(float, float);
+	void rotate(float);
+	void scale(float, float);
+	void transform(const Matrix3x3&);
+
 	void compute();
 	void draw();
 

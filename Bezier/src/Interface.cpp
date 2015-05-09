@@ -4,6 +4,80 @@
 #include "global.h"
 #include "interface.h"
 
+void specialKey(int k, int x, int y)
+{
+	float stepT = 5.0f;
+	float stepR = 2.0f;
+	float stepS = 0.5f;
+	switch (k)
+	{
+	case GLUT_KEY_UP:
+		if (CURRENT_CURVE_EDITED >= 0 && CURRENT_CURVE_EDITED < curves.size())
+		{
+			switch (TRANSFORMATION_MODE)
+			{
+			case TRANSLATION:
+				curves[CURRENT_CURVE_EDITED]->translate(0.0f, -stepT);
+				break;
+			case ROTATION:
+				curves[CURRENT_CURVE_EDITED]->scale(1.0f, stepS + 1.0f);
+				break;
+			}
+		}
+		break;
+	case GLUT_KEY_DOWN:
+		if (CURRENT_CURVE_EDITED >= 0 && CURRENT_CURVE_EDITED < curves.size())
+		{
+			switch (TRANSFORMATION_MODE)
+			{
+			case TRANSLATION:
+				curves[CURRENT_CURVE_EDITED]->translate(0.0f, -stepT);
+				break;
+			case SCALING:
+				curves[CURRENT_CURVE_EDITED]->translate(0.0f, stepT);
+				break;
+			}
+		}
+		break;
+	case GLUT_KEY_LEFT:
+		if (CURRENT_CURVE_EDITED >= 0 && CURRENT_CURVE_EDITED < curves.size())
+		{
+			switch (TRANSFORMATION_MODE)
+			{
+			case TRANSLATION:
+				curves[CURRENT_CURVE_EDITED]->translate(-stepT, 0.0f);
+				break;
+			case ROTATION:
+				curves[CURRENT_CURVE_EDITED]->rotate(-stepR);
+				break;
+			case SCALING:
+				curves[CURRENT_CURVE_EDITED]->scale(stepS, 1.0f);
+				break;
+			}
+		}
+		break;
+	case GLUT_KEY_RIGHT:
+		if (CURRENT_CURVE_EDITED >= 0 && CURRENT_CURVE_EDITED < curves.size())
+		{
+			switch (TRANSFORMATION_MODE)
+			{
+			case TRANSLATION:
+				curves[CURRENT_CURVE_EDITED]->translate(stepT, 0.0f);
+				break;
+			case ROTATION:
+				curves[CURRENT_CURVE_EDITED]->rotate(stepR);
+				break;
+			case SCALING:
+				curves[CURRENT_CURVE_EDITED]->scale(stepS + 1.0f, 1.0f);
+				break;
+			}
+		}
+		break;
+	}
+
+	glutPostRedisplay();
+}
+
 // Fonction appelée par le clavier
 void key(unsigned char k, int x, int y)
 {
@@ -242,6 +316,7 @@ void editCurve(int selection)
 	int curve_selected = item_selected - 2;
 	int edition_selected = selection % 10;
 
+	TRANSFORMATION_MODE = NONE;
 	switch (edition_selected)
 	{
 	case 2:
@@ -250,10 +325,13 @@ void editCurve(int selection)
 		glutPostRedisplay();
 		break;
 	case 3:
+		TRANSFORMATION_MODE = TRANSLATION;
 		break;
 	case 4:
+		TRANSFORMATION_MODE = ROTATION;
 		break;
 	case 5:
+		TRANSFORMATION_MODE = SCALING;
 		break;
 	case 6:
 		glutSetMenu(1);

@@ -6,12 +6,22 @@
 #define WINDOW_WIDTH 500
 #define WINDOW_HEIGHT 500
 
+enum TransformationMode
+{
+	NONE,
+	TRANSLATION,
+	ROTATION,
+	SCALING,
+	SHEARING
+};
+
 extern std::vector<BezierCurve*> curves;
-extern BezierCurve bezier;
 
 extern int BEZIER_EDITED;
 extern int CURRENT_CURVE_EDITED;
 extern int CURRENT_VERTEX_EDITED;
 extern bool MIDDLE_BUTTON_PRESSED;
+
+extern TransformationMode TRANSFORMATION_MODE;
 
 #endif

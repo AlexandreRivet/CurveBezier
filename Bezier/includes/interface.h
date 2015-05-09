@@ -4,6 +4,7 @@
 #include "includes.h"
 #include "Vector2.h"
 
+void specialKey(int, int, int);
 void key(unsigned char, int, int);
 void mouse(int, int, int, int);
 void motion(int, int);
