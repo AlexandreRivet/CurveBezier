@@ -31,10 +31,10 @@ void specialKey(int k, int x, int y)
 			switch (TRANSFORMATION_MODE)
 			{
 			case TRANSLATION:
-				curves[CURRENT_CURVE_EDITED]->translate(0.0f, -stepT);
+				curves[CURRENT_CURVE_EDITED]->translate(0.0f, stepT);
 				break;
 			case SCALING:
-				curves[CURRENT_CURVE_EDITED]->translate(0.0f, stepT);
+				curves[CURRENT_CURVE_EDITED]->scale(1.0f, stepT);
 				break;
 			}
 		}
@@ -222,9 +222,34 @@ void initMenu()
 	int curveMenu = glutCreateMenu(selectCurve);
 	glutAddMenuEntry("New", 11);
 	
+	int first_c0 = glutCreateMenu(firstCurveConnection);
+	int second_c0 = glutCreateMenu(secondCurveConnection);
+	int first_c1 = glutCreateMenu(firstCurveConnection);
+	int second_c1 = glutCreateMenu(secondCurveConnection);
+	int first_c2 = glutCreateMenu(firstCurveConnection);
+	int second_c2 = glutCreateMenu(secondCurveConnection);
+
+	int c0_menu = glutCreateMenu(empty);
+	glutAddSubMenu("First", first_c0);
+	glutAddSubMenu("Second", second_c0);
+	
+	int c1_menu = glutCreateMenu(empty);
+	glutAddSubMenu("First", first_c1);
+	glutAddSubMenu("Second", second_c1);
+
+	int c2_menu = glutCreateMenu(empty);
+	glutAddSubMenu("First", first_c2);
+	glutAddSubMenu("Second", second_c2);
+
+	int connectionMenu = glutCreateMenu(empty);
+	glutAddSubMenu("C0", c0_menu);
+	glutAddSubMenu("C1", c1_menu);
+	glutAddSubMenu("C2", c2_menu);
+
 	glutCreateMenu(select);
 	glutAddSubMenu("Curves", curveMenu);
-	glutAddMenuEntry("Quit", 2);
+	glutAddSubMenu("Connection", connectionMenu);
+	glutAddMenuEntry("Quit", 3);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
@@ -232,7 +257,7 @@ void select(int selection)
 {
 	switch (selection)
 	{
-	case 2:
+	case 3:
 		exit(0);
 		break;
 	default:
@@ -245,13 +270,112 @@ void selectCurve(int selection)
 	switch (selection)
 	{
 	case 11:
+		// Demande à l'utilisateur de saisir l'intervalle de paramétrage
+		int a, b;
+		std::cout << "Entrez a: " << std::endl;
+		std::cin >> a;
+		std::cout << "Entrez b: " << std::endl;
+		std::cin >> b;
+		
+		// Ajout dans les différents menus
 		addCurveItem(1, curves.size());
-		curves.push_back(new BezierCurve());
+		
+		// Création de la bézier
+		BezierCurve* bezier = new BezierCurve();
+		bezier->setParametricSpace(a, b);
+		curves.push_back(bezier);
 
+		// Mise à jour des variables
 		CURRENT_CURVE_EDITED = curves.size() - 1;
 		CURRENT_VERTEX_EDITED = 0;
 		break;
 	}
+}
+
+void firstCurveConnection(int selection)
+{
+	FIRST_CURVE = selection % 10;;
+}
+
+void secondCurveConnection(int selection)
+{
+	int connection_type = selection / 10;
+	SECOND_CURVE = selection % 10;
+
+	if ((FIRST_CURVE == -1 || SECOND_CURVE == -1) || (FIRST_CURVE == SECOND_CURVE))
+		return;
+
+	// Au choix de la deuxième on effectue le raccordement en question
+	Vector2 lastVec, firstVec, translation, P1, P2;
+	float lambda, lambda1, distanceCurve1, distanceCurve2, r1, r2;
+	switch (connection_type)
+	{
+	case 3:																		// C0 connection
+		lastVec = curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 1);
+		firstVec = curves[SECOND_CURVE]->getPointAt(0);
+		translation = lastVec - firstVec;
+		curves[SECOND_CURVE]->translate(translation.getX(), translation.getY());
+		break;
+	case 5:																		// C1 connection
+		lastVec = curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 1);
+		firstVec = curves[SECOND_CURVE]->getPointAt(0);
+		translation = lastVec - firstVec;
+		curves[SECOND_CURVE]->translate(translation.getX(), translation.getY());
+		
+		r1 = abs(curves[FIRST_CURVE]->getEnd() - curves[FIRST_CURVE]->getStart());
+		r2 = abs(curves[SECOND_CURVE]->getEnd() - curves[SECOND_CURVE]->getStart());
+		lambda = r1 / (r1 + r2);
+
+		// distanceCurve1 = curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 1).distance(curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 2));
+		// distanceCurve2 = curves[SECOND_CURVE]->getPointAt(0).distance(curves[SECOND_CURVE]->getPointAt(1));
+		// lambda = distanceCurve1 / (distanceCurve2 + distanceCurve1);
+
+		P1 = (curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 1) - curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 2) * (1 - lambda)) / lambda;
+
+		curves[SECOND_CURVE]->getPointAt(1).setX(P1.getX());
+		curves[SECOND_CURVE]->getPointAt(1).setY(P1.getY());
+		curves[SECOND_CURVE]->compute();
+		break;
+	case 7:																		// C2 connection
+		lastVec = curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 1);
+		firstVec = curves[SECOND_CURVE]->getPointAt(0);
+		translation = lastVec - firstVec;
+		curves[SECOND_CURVE]->translate(translation.getX(), translation.getY());
+
+		r1 = abs(curves[FIRST_CURVE]->getEnd() - curves[FIRST_CURVE]->getStart());
+		r2 = abs(curves[SECOND_CURVE]->getEnd() - curves[SECOND_CURVE]->getStart());
+		lambda = r1 / (r1 + r2);
+
+		// distanceCurve1 = curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 1).distance(curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 2));
+		// distanceCurve2 = curves[SECOND_CURVE]->getPointAt(0).distance(curves[SECOND_CURVE]->getPointAt(1));
+		// lambda = distanceCurve1 / (distanceCurve2 + distanceCurve1);
+
+		P1 = (curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 1) - curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 2) * (1 - lambda)) / lambda;
+
+		curves[SECOND_CURVE]->getPointAt(1).setX(P1.getX());
+		curves[SECOND_CURVE]->getPointAt(1).setY(P1.getY());
+
+		// distanceCurve1 = curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 1).distance(curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 2));
+		// distanceCurve2 = curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 2).distance(curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 3));
+		// lambda = distanceCurve2 / (distanceCurve2 + distanceCurve1);
+
+		D = (curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 2) - curves[FIRST_CURVE]->getPointAt(curves[FIRST_CURVE]->getNbVertices() - 3) * (1 - lambda)) / lambda;
+
+		distanceCurve1 = curves[SECOND_CURVE]->getPointAt(0).distance(curves[SECOND_CURVE]->getPointAt(1));
+		distanceCurve2 = curves[SECOND_CURVE]->getPointAt(1).distance(curves[SECOND_CURVE]->getPointAt(2));
+		lambda = distanceCurve1 / (distanceCurve2 + distanceCurve1);
+
+		P2 = (curves[SECOND_CURVE]->getPointAt(1) - D * (1 - lambda)) / lambda;
+
+		curves[SECOND_CURVE]->getPointAt(2).setX(P2.getX());
+		curves[SECOND_CURVE]->getPointAt(2).setY(P2.getY());
+		curves[SECOND_CURVE]->compute();
+		break;
+	}
+	glutPostRedisplay();
+
+	FIRST_CURVE = -1;
+	SECOND_CURVE = -1;
 }
 
 void addCurveItem(int parent, int index)
@@ -279,6 +403,25 @@ void addCurveItem(int parent, int index)
 
 	glutSetMenu(parent);
 	glutAddSubMenu((prefix + std::to_string(index + 1)).c_str(), curve_tmp);
+
+	// Copie juste pour la sélection dans les raccordements
+	// C0
+	glutSetMenu(2);
+	glutAddMenuEntry((prefix + std::to_string(index + 1)).c_str(), 20 + index);
+	glutSetMenu(3);
+	glutAddMenuEntry((prefix + std::to_string(index + 1)).c_str(), 30 + index);
+
+	// C1
+	glutSetMenu(4);
+	glutAddMenuEntry((prefix + std::to_string(index + 1)).c_str(), 40 + index);
+	glutSetMenu(5);
+	glutAddMenuEntry((prefix + std::to_string(index + 1)).c_str(), 50 + index);
+
+	// C2
+	glutSetMenu(6);
+	glutAddMenuEntry((prefix + std::to_string(index + 1)).c_str(), 60 + index);
+	glutSetMenu(7);
+	glutAddMenuEntry((prefix + std::to_string(index + 1)).c_str(), 70 + index);
 }
 
 // Fonction appelée pour le choix d'une couleur
@@ -326,12 +469,15 @@ void editCurve(int selection)
 		break;
 	case 3:
 		TRANSFORMATION_MODE = TRANSLATION;
+		glutPostRedisplay();
 		break;
 	case 4:
 		TRANSFORMATION_MODE = ROTATION;
+		glutPostRedisplay();
 		break;
 	case 5:
 		TRANSFORMATION_MODE = SCALING;
+		glutPostRedisplay();
 		break;
 	case 6:
 		glutSetMenu(1);
@@ -352,4 +498,9 @@ void editCurve(int selection)
 		glutPostRedisplay();
 		break;
 	}
+}
+
+void empty(int selection)
+{
+
 }

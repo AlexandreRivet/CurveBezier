@@ -15,8 +15,13 @@ void mouseUp(int, int, int);
 void initMenu();
 void select(int selection);
 void selectCurve(int selection);
+void selectConnection(int selection);
+void firstCurveConnection(int selection);
+void secondCurveConnection(int selection);
 void editCurve(int selection);
 void addCurveItem(int parent, int index);
 void setColor(int selection);
+
+void empty(int selection);
 
 #endif

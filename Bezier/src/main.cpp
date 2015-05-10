@@ -1,5 +1,6 @@
 ﻿#include "includes.h"
 #include "global.h"
+#include "Tools.h"
 #include "interface.h"
 
 void reshape(int w, int l)
@@ -40,6 +41,26 @@ void display()
 		glVertex2f(vector_tmp.getX() - 5, vector_tmp.getY() + 5);
 		glEnd();
 	}
+
+	std::string msg("");
+	switch (TRANSFORMATION_MODE)
+	{
+	case NONE:
+		msg += "NONE";
+		break;
+	case TRANSLATION:
+		msg += "TRANSLATION";
+		break;
+	case ROTATION:
+		msg += "ROTATION";
+		break;
+	case SCALING:
+		msg += "SCALING";
+		break;
+	}
+	renderString(80, 10, GLUT_BITMAP_8_BY_13, msg.c_str(), 1.0f, 1.0f, 1.0f);
+
+	renderString(D.getX(), D.getY(), GLUT_BITMAP_8_BY_13, "D", 1.0f, 0.0f, 0.0f);
 
 	glFlush();
 }

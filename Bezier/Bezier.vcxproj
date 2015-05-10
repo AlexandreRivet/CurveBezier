@@ -88,6 +88,7 @@
     <ClCompile Include="src\Interface.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Matrix3x3.cpp" />
+    <ClCompile Include="src\Tools.cpp" />
     <ClCompile Include="src\Vector2.cpp" />
     <ClCompile Include="src\Vector3.cpp" />
   </ItemGroup>
@@ -98,6 +99,7 @@
     <ClInclude Include="includes\includes.h" />
     <ClInclude Include="includes\interface.h" />
     <ClInclude Include="includes\Matrix3x3.h" />
+    <ClInclude Include="includes\Tools.h" />
     <ClInclude Include="includes\type.h" />
     <ClInclude Include="includes\Vector2.h" />
     <ClInclude Include="includes\Vector3.h" />

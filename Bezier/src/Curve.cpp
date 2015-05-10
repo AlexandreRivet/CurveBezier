@@ -70,6 +70,18 @@ void Curve::draw()
 		v = mControlPoints[i];
 		glVertex2f(v.getX(), v.getY());
 	}
+	glEnd();
+
+	glBegin(GL_QUADS);
+	for (unsigned int i = 0; i < mControlPoints.size(); i++)
+	{
+		v = mControlPoints[i];
+		glVertex2f(v.getX() - 2, v.getY() - 2);
+		glVertex2f(v.getX() + 2, v.getY() - 2);
+		glVertex2f(v.getX() + 2, v.getY() + 2);
+		glVertex2f(v.getX() - 2, v.getY() + 2);
+	}
+	glEnd();
 
 	glEnd();
 }

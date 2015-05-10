@@ -12,6 +12,9 @@ public:
 	~BezierCurve();
 
 	Vector2& getPointAt(const int);
+	void setParametricSpace(int, int);
+	int getStart() const;
+	int getEnd() const;
 
 	void translate(float, float);
 	void rotate(float);
@@ -22,6 +25,10 @@ public:
 	void draw();
 
 private:
+
+	int mA;
+	int mB;
+	bool mComputable;
 
 	std::vector<Vector2> mComputedPoints;
 };

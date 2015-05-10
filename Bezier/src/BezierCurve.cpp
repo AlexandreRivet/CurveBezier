@@ -8,6 +8,9 @@
 BezierCurve::BezierCurve()
 {
 	mStep = 1;
+	mA = 0;
+	mB = 1;
+	mComputable = true;
 }
 
 BezierCurve::~BezierCurve()
@@ -17,6 +20,22 @@ BezierCurve::~BezierCurve()
 Vector2& BezierCurve::getPointAt(const int index)
 {
 	return mControlPoints[index];
+}
+
+void BezierCurve::setParametricSpace(int a, int b)
+{
+	mA = a;
+	mB = b;
+}
+
+int BezierCurve::getStart() const
+{
+	return mA;
+}
+
+int BezierCurve::getEnd() const
+{
+	return mB;
 }
 
 void BezierCurve::draw()
@@ -30,6 +49,17 @@ void BezierCurve::draw()
 	{
 		v = mComputedPoints[i];
 		glVertex2f(v.getX(), v.getY());
+	}
+	glEnd();
+
+	glBegin(GL_QUADS);
+	for (unsigned int i = 0; i < mComputedPoints.size(); i++)
+	{
+		v = mComputedPoints[i];
+		glVertex2f(v.getX() - 2, v.getY() - 2);
+		glVertex2f(v.getX() + 2, v.getY() - 2);
+		glVertex2f(v.getX() + 2, v.getY() + 2);
+		glVertex2f(v.getX() - 2, v.getY() + 2);
 	}
 	glEnd();
 
@@ -59,6 +89,9 @@ static Vector2 DeCastelJau(float step, std::vector<Vector2> points)
 
 void BezierCurve::compute()
 {
+	if (!mComputable)
+		return;
+
 	mComputedPoints.clear();
 	if (mControlPoints.size() < 3)
 		return;
