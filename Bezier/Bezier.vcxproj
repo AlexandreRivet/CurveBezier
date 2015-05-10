@@ -82,6 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Spline.cpp" />
     <ClCompile Include="src\BezierCurve.cpp" />
     <ClCompile Include="src\Curve.cpp" />
     <ClCompile Include="src\global.cpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="includes\type.h" />
     <ClInclude Include="includes\Vector2.h" />
     <ClInclude Include="includes\Vector3.h" />
+    <ClInclude Include="Spline.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

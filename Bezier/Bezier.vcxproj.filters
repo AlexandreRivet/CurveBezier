@@ -54,6 +54,9 @@
     <ClCompile Include="src\Tools.cpp">
       <Filter>Fichiers sources\Other</Filter>
     </ClCompile>
+    <ClCompile Include="Spline.cpp">
+      <Filter>Fichiers sources\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\Vector2.h">
@@ -85,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="includes\Tools.h">
       <Filter>Fichiers d%27en-tête\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Spline.h">
+      <Filter>Fichiers d%27en-tête\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
