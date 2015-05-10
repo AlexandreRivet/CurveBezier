@@ -1,6 +1,7 @@
 #include "global.h"
 
 std::vector<BezierCurve*> curves;
+std::vector<Spline*> splines;
 
 int BEZIER_EDITED = -1;
 int CURRENT_CURVE_EDITED = -1;

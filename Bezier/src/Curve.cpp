@@ -32,6 +32,11 @@ int Curve::getNbVertices() const
 	return mControlPoints.size();
 }
 
+void Curve::addControlPoints(std::vector<Vector2> list)
+{
+	mControlPoints = list;
+}
+
 void Curve::add(const Vector2& v)
 {
 	mControlPoints.push_back(v);
@@ -59,11 +64,11 @@ void Curve::setColor(float r, float g, float b)
 	mColor[2] = b;
 }
 
-void Curve::draw()
+void Curve::draw(float r, float g, float b)
 {
 	Vector2 v;
 
-	glColor3f(0.0f, 1.0f, 0.0f);
+	glColor3f(r, g, b);
 	glBegin(GL_LINE_STRIP);
 	for (unsigned int i = 0; i < mControlPoints.size(); i++)
 	{

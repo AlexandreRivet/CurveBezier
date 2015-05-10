@@ -19,6 +19,7 @@ public:
 	void decStep();
 	int getNbVertices() const;
 
+	void addControlPoints(std::vector<Vector2> list);
 	void add(const Vector2&);
 	void insert(int, const Vector2&);
 	void remove(int);
@@ -30,7 +31,7 @@ public:
 	virtual void scale(float, float) = 0;
 	virtual void transform(const Matrix3x3&) = 0;
 
-	void draw();
+	void draw(float, float, float);
 
 	virtual void compute();
 

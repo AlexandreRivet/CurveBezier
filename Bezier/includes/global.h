@@ -2,6 +2,7 @@
 #define _GLOBAL_H_
 
 #include "BezierCurve.h"
+#include "Spline.h"
 
 #define WINDOW_WIDTH 1000
 #define WINDOW_HEIGHT 1000
@@ -16,6 +17,7 @@ enum TransformationMode
 };
 
 extern std::vector<BezierCurve*> curves;
+extern std::vector<Spline*> splines;
 
 extern int BEZIER_EDITED;
 extern int CURRENT_CURVE_EDITED;

@@ -22,7 +22,7 @@ public:
 	void transform(const Matrix3x3&);
 
 	void compute();
-	void draw();
+	void draw(bool);
 
 private:
 

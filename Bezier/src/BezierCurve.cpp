@@ -7,7 +7,7 @@
 
 BezierCurve::BezierCurve()
 {
-	mStep = 1;
+	mStep = 10;
 	mA = 0;
 	mB = 1;
 	mComputable = true;
@@ -38,10 +38,11 @@ int BezierCurve::getEnd() const
 	return mB;
 }
 
-void BezierCurve::draw()
+void BezierCurve::draw(bool withDebug)
 {
-	Curve::draw();
-
+	if (withDebug)
+		Curve::draw(0.0f, 1.0f, 0.0f);
+	
 	Vector2 v;
 	glColor3f(mColor[0], mColor[1], mColor[2]);
 	glBegin(GL_LINE_STRIP);
@@ -52,17 +53,21 @@ void BezierCurve::draw()
 	}
 	glEnd();
 
-	glBegin(GL_QUADS);
-	for (unsigned int i = 0; i < mComputedPoints.size(); i++)
+	if (withDebug)
 	{
-		v = mComputedPoints[i];
-		glVertex2f(v.getX() - 2, v.getY() - 2);
-		glVertex2f(v.getX() + 2, v.getY() - 2);
-		glVertex2f(v.getX() + 2, v.getY() + 2);
-		glVertex2f(v.getX() - 2, v.getY() + 2);
+		glBegin(GL_QUADS);
+		for (unsigned int i = 0; i < mComputedPoints.size(); i++)
+		{
+			v = mComputedPoints[i];
+			glVertex2f(v.getX() - 2, v.getY() - 2);
+			glVertex2f(v.getX() + 2, v.getY() - 2);
+			glVertex2f(v.getX() + 2, v.getY() + 2);
+			glVertex2f(v.getX() - 2, v.getY() + 2);
+		}
+		glEnd();
 	}
-	glEnd();
-
+	
+	
 	/*
 	std::string msg("");
 	msg += std::string("Control Points: ") + std::to_string(mControlPoints.size());
